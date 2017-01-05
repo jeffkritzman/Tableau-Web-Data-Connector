@@ -1,20 +1,25 @@
 (function () {
-    var myConnector = tableau.makeConnector();
-
+    // console.log("in the js");
+	
+	var myConnector = tableau.makeConnector();
+	
+	// console.log("pre-columns");
+	
     myConnector.getSchema = function (schemaCallback) {
 		var cols = [
-			{ id : "url", alias : "url", dataType : tableau.dataTypeEnum.string }
-			// { id : "at", alias : "Time song played", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
-			// { id : "artist", alias : "artist", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
-			// { id : "name", alias : "song", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
-			// { id : "album", alias : "album", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
-			// { id : "dj", alias : "dj", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
-			// { id : "label", alias : "label", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
-			// { id : "showname", alias : "Show name", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
-			// { id : "year", alias : "year", columnRole: "dimension", dataType : tableau.dataTypeEnum.int },
-			// { id : "request", alias : "request",columnRole: "dimension", dataType : tableau.dataTypeEnum.bool }
+			{ id : "at", alias : "Time song played", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
+			{ id : "artist", alias : "artist", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
+			{ id : "name", alias : "song", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
+			{ id : "album", alias : "album", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
+			{ id : "dj", alias : "dj", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
+			{ id : "label", alias : "label", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
+			{ id : "showname", alias : "Show name", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
+			{ id : "year", alias : "year", columnRole: "dimension", dataType : tableau.dataTypeEnum.int },
+			{ id : "request", alias : "request",columnRole: "dimension", dataType : tableau.dataTypeEnum.bool }
 		];
-
+		
+		// console.log("post-columns");
+		
 		var tableInfo = {
 			id : "WCBN",
 			alias : "WCBN Freeform Shows",
@@ -25,24 +30,36 @@
 	};
 
     myConnector.getData = function(table, doneCallback) {
-		$.getJSON("http://app.wcbn.org/freeform_shows/243.json", function(resp) {
-			var feat = resp.features,
+		$.getJSON("http://localhost:8889/app.wcbn.org/freeform_shows/243.json", function(resp) {
+			// console.log("resp: ");
+			// console.log(resp);
+			
+			var episodes = resp.episodes,
 				tableData = [];
+			
+			// console.log("episodes: ");
+			// console.log(episodes);
 
 			// Iterate over the JSON object
-			for (var i = 0, len = feat.length; i < len; i++) {
-				tableData.push({
-					"url": feat[i].url
-					// "at": feat[i].episodes.songs.at,
-					// "artist": feat[i].episodes.songs.artist,
-					// "name": feat[i].episodes.songs.name,
-					// "album": feat[i].episodes.songs.album,
-					// "label": feat[i].episodes.songs.label,
-					// "year": feat[i].episodes.songs.year,
-					// "request": feat[i].episodes.songs.request,
-					// "dj": feat[i].episodes.dj,
-					// "showname": feat[i].name
-				});
+
+			for (var i = 0, len = episodes.length; i < len; i++) {
+				var episodeI = episodes[i]
+				// console.log("episodeI: ");
+				// console.log(episodeI);
+				// console.log(episodeI.songs.length);
+				for (var j = 0, len2 = episodeI.songs.length; j < len2; j++) {
+					tableData.push({
+						"showname": name,
+						"at": episodeI.songs[j].at,
+						"artist": episodeI.songs[j].artist,
+						"name": episodeI.songs[j].name,
+						"album": episodeI.songs[j].album,
+						"label": episodeI.songs[j].label,
+						"year": episodeI.songs[j].year,
+						"request": episodeI.songs[j].request,
+						"dj": episodeI.dj
+					});
+				}
 			}
 
 			table.appendRows(tableData);
