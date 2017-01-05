@@ -49,7 +49,6 @@
 				// console.log(episodeI.songs.length);
 				for (var j = 0, len2 = episodeI.songs.length; j < len2; j++) {
 					tableData.push({
-						"showname": resp.name,
 						"at": episodeI.songs[j].at,
 						"artist": episodeI.songs[j].artist,
 						"name": episodeI.songs[j].name,
@@ -57,6 +56,7 @@
 						"label": episodeI.songs[j].label,
 						"year": episodeI.songs[j].year,
 						"request": episodeI.songs[j].request,
+						"showname": episodeI.name,
 						"dj": episodeI.dj
 					});
 				}
