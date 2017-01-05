@@ -56,7 +56,7 @@
 						"label": episodeI.songs[j].label,
 						"year": episodeI.songs[j].year,
 						"request": episodeI.songs[j].request,
-						"showname": episodeI.name,
+						"showname": resp.name,
 						"dj": episodeI.dj
 					});
 				}
