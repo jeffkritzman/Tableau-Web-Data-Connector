@@ -49,7 +49,7 @@
 				// console.log(episodeI.songs.length);
 				for (var j = 0, len2 = episodeI.songs.length; j < len2; j++) {
 					tableData.push({
-						"showname": name,
+						"showname": resp.name,
 						"at": episodeI.songs[j].at,
 						"artist": episodeI.songs[j].artist,
 						"name": episodeI.songs[j].name,
