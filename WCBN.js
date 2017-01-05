@@ -7,7 +7,7 @@
 	
     myConnector.getSchema = function (schemaCallback) {
 		var cols = [
-			{ id : "at", alias : "Time song played", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
+			{ id : "at", alias : "Time song played", columnRole: "dimension", dataType : tableau.dataTypeEnum.date },
 			{ id : "artist", alias : "artist", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
 			{ id : "name", alias : "song", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
 			{ id : "album", alias : "album", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
