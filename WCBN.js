@@ -1,10 +1,7 @@
 (function () {
-    // console.log("in the js");
-	
+
 	var myConnector = tableau.makeConnector();
-	
-	// console.log("pre-columns");
-	
+
     myConnector.getSchema = function (schemaCallback) {
 		var cols = [
 			{ id : "at", alias : "Time song played", columnRole: "dimension", dataType : tableau.dataTypeEnum.string },
@@ -18,8 +15,6 @@
 			{ id : "request", alias : "request",columnRole: "dimension", dataType : tableau.dataTypeEnum.bool }
 		];
 		
-		// console.log("post-columns");
-		
 		var tableInfo = {
 			id : "WCBN",
 			alias : "WCBN Freeform Shows",
@@ -30,41 +25,100 @@
 	};
 
     myConnector.getData = function(table, doneCallback) {
-		$.getJSON("http://localhost:8889/app.wcbn.org/freeform_shows/243.json", function(resp) {
-			// console.log("resp: ");
-			// console.log(resp);
-			
-			var episodes = resp.episodes,
-				tableData = [];
-			
-			// console.log("episodes: ");
-			// console.log(episodes);
+		for (var h = 1; h < 10; h++) {  // 001-009
+			var url = "http://localhost:8889/app.wcbn.org/freeform_shows/00" + h + ".json"
+			$.getJSON(url, function(resp) {
+				var episodes = resp.episodes,
+					tableData = [];
 
-			// Iterate over the JSON object
-
-			for (var i = 0, len = episodes.length; i < len; i++) {
-				var episodeI = episodes[i]
-				// console.log("episodeI: ");
-				// console.log(episodeI);
-				// console.log(episodeI.songs.length);
-				for (var j = 0, len2 = episodeI.songs.length; j < len2; j++) {
-					tableData.push({
-						"at": episodeI.songs[j].at,
-						"artist": episodeI.songs[j].artist,
-						"name": episodeI.songs[j].name,
-						"album": episodeI.songs[j].album,
-						"label": episodeI.songs[j].label,
-						"year": episodeI.songs[j].year,
-						"request": episodeI.songs[j].request,
-						"showname": resp.name,
-						"dj": episodeI.dj
-					});
+				// Iterate over the JSON object
+				for (var i = 0, len = episodes.length; i < len; i++) {
+					var episodeI = episodes[i]
+					// console.log("episodeI: ");
+					// console.log(episodeI);
+					// console.log(episodeI.songs.length);
+					for (var j = 0, len2 = episodeI.songs.length; j < len2; j++) {
+						tableData.push({
+							"at": episodeI.songs[j].at,
+							"artist": episodeI.songs[j].artist,
+							"name": episodeI.songs[j].name,
+							"album": episodeI.songs[j].album,
+							"label": episodeI.songs[j].label,
+							"year": episodeI.songs[j].year,
+							"request": episodeI.songs[j].request,
+							"showname": episodeI.name,
+							"dj": episodeI.dj
+						});
+					}
 				}
-			}
+				table.appendRows(tableData);
+				doneCallback();
+			});
+		}
 
-			table.appendRows(tableData);
-			doneCallback();
-		});
+		for (var h1 = 1; h1 < 10; h1++) {  // 010-099
+			for (var h2 = 0; h2 < 10; h2++) {
+				var url = "http://localhost:8889/app.wcbn.org/freeform_shows/0" + h1 + h2 + ".json"
+				$.getJSON(url, function(resp) {
+					var episodes = resp.episodes,
+						tableData = [];
+
+					// Iterate over the JSON object
+					for (var i = 0, len = episodes.length; i < len; i++) {
+						var episodeI = episodes[i]
+						// console.log("episodeI: ");
+						// console.log(episodeI);
+						// console.log(episodeI.songs.length);
+						for (var j = 0, len2 = episodeI.songs.length; j < len2; j++) {
+							tableData.push({
+								"at": episodeI.songs[j].at,
+								"artist": episodeI.songs[j].artist,
+								"name": episodeI.songs[j].name,
+								"album": episodeI.songs[j].album,
+								"label": episodeI.songs[j].label,
+								"year": episodeI.songs[j].year,
+								"request": episodeI.songs[j].request,
+								"showname": episodeI.name,
+								"dj": episodeI.dj
+							});
+						}
+					}
+					table.appendRows(tableData);
+					doneCallback();
+				});
+			}
+		}
+
+		for (var h = 100; h < 266; h++) {  // 100-265
+			var url = "http://localhost:8889/app.wcbn.org/freeform_shows/" + h + ".json"
+			$.getJSON(url, function(resp) {
+				var episodes = resp.episodes,
+					tableData = [];
+
+				// Iterate over the JSON object
+				for (var i = 0, len = episodes.length; i < len; i++) {
+					var episodeI = episodes[i]
+					// console.log("episodeI: ");
+					// console.log(episodeI);
+					// console.log(episodeI.songs.length);
+					for (var j = 0, len2 = episodeI.songs.length; j < len2; j++) {
+						tableData.push({
+							"at": episodeI.songs[j].at,
+							"artist": episodeI.songs[j].artist,
+							"name": episodeI.songs[j].name,
+							"album": episodeI.songs[j].album,
+							"label": episodeI.songs[j].label,
+							"year": episodeI.songs[j].year,
+							"request": episodeI.songs[j].request,
+							"showname": episodeI.name,
+							"dj": episodeI.dj
+						});
+					}
+				}
+				table.appendRows(tableData);
+				doneCallback();
+			});
+		}
 	};
 
     tableau.registerConnector(myConnector);
@@ -74,5 +128,5 @@
         tableau.connectionName = "WCBN Freeform Shows";
         tableau.submit();
     });
-});
+	});
 })();
