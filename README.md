@@ -1,3 +1,2 @@
-# scratch
-for examples and samples and other such things.
-a good place to edit.
+# web data connector
+working on projects involving the Tableau web data connector
